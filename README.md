@@ -1,0 +1,1 @@
+Black Desert Online Discord Bot for the guild Detox
