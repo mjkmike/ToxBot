@@ -1,0 +1,4 @@
+.toxbot-google-creds.json
+./bin
+./node_modules
+.env
