@@ -29,6 +29,10 @@ client.on('message', (msg:any) => {
       let gear = new GearRank(msg);
       gear.getValue();
     }
+  /*.partUp <nodeSize> <PAGroups> <Cannons>
+    nodeSize i.e 30 
+    PA groups i.e. 2
+  */
   } else if(msg.content.startsWith('.partyUp')) {
     //list of allowed channels for this command
     let channelOkayList = ["bot-spam"];
