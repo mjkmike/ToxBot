@@ -99,51 +99,40 @@ class PartyUp {
 
         //get members in the offense channel(will contain mercs)
         const warChannel = this.message.guild.channels.get('813570592237813798');
-        let connectedMembers:string[] = []
+        let connectedMembers:string[] = [];
         warChannel.members.forEach((member:any) => {
             connectedMembers.push("@" + member.user.tag);
         });
 
 
         //TODO: REMOVE THIS LATER ADDING FOR TESTING
-        // connectedMembers.push(
-        //     "@Diamond#1147",
-        //     "@biian#4199",
-        //     "@Borrador#0001",
-        //     "@Cadra#7845",
-            
-        //     "@[66th] Hugoboss#5924",
-        //     "@FabAstronaut#9999",
-            
-        //     "@Cierra#7556",
-        //     "@Twinkie#2490",
-            
-        //     "@Mentor5thForm#5918",
-        //     "@Henry#4358",
-            
-        //     "@catinthehat#0266",
-        //     "@Jana#9114",
-        //     "@JoliPixy#2303",
-        //     "@Kasted#0419",
-        //     "@Ashco#5757",
-        //     /*"@mjkmike#9034",*/
-        //     "@Pwn#0002",
-        //     "@OldOak#1584",
-        //     /*"@OnRepeat#2819",*/
-        //     "@Cat Pettington#4715",
-            
-        //     "@Kelso#2403",
-            
-            
-        //     "@softnips#2705",
-        //     "@Conture#4678",
-        //     "@Toogar#1730",
-        //     "@Calamity#5423",
-        //     "@Vala#0001",
-        //     "@XeroZero0#5614",
-        //     "@tiger7512#5316",
-        //     "@ZecretSquirreL#1520",
-        //     "@testing#1234");
+        // connectedMembers.push("@Diamond#1147");
+        // connectedMembers.push("@biian#4199");
+        // connectedMembers.push("@Borrador#0001");
+        // connectedMembers.push("@Cadra#7845");
+        // connectedMembers.push("@[66th] Hugoboss#5924");
+        // connectedMembers.push("@FabAstronaut#9999");            
+        // connectedMembers.push("@Cierra#7556");
+        // connectedMembers.push("@Twinkie#2490");
+        // connectedMembers.push("@Mentor5thForm#5918");
+        // connectedMembers.push("@Henry#4358");
+        // connectedMembers.push("@catinthehat#0266");
+        // connectedMembers.push("@Jana#9114");
+        // connectedMembers.push("@JoliPixy#2303");
+        // connectedMembers.push("@Pwn#0002");
+        // connectedMembers.push("@OldOak#1584");
+        // connectedMembers.push("@OnRepeat#2819");
+        // connectedMembers.push("@Cat Pettington#4715");    
+        // connectedMembers.push("@Kelso#2403");
+        // connectedMembers.push("@softnips#2705");
+        // connectedMembers.push("@Conture#4678");
+        // connectedMembers.push("@Toogar#1730");
+        // connectedMembers.push("@Calamity#5423");
+        // connectedMembers.push("@Vala#0001");
+        // connectedMembers.push("@XeroZero0#5614");
+        // connectedMembers.push("@tiger7512#5316");
+        // connectedMembers.push("@ZecretSquirreL#1520");
+        // connectedMembers.push("@testing#1234");
 
         //Access Detox Member Statistics
         const doc = new GoogleSpreadsheet('1Cr-GiObaSizG8jYvD5XBz9VEXdXK1o_f7kby9MI8xEI');
@@ -162,7 +151,9 @@ class PartyUp {
 
         //get the main shotcallers from people in channel and sort by prio
         let preMainShotcallers:any[] = currentRows.filter((row:any) => {
-            if((row['platoon'] === "Main Shotcaller") && connectedMembers.indexOf(row['Discord Tag']) !== -1){
+            let index:number = connectedMembers.indexOf(row['Discord Tag']);
+            if((row['platoon'] === "Main Shotcaller") && index !== -1){
+                connectedMembers.splice(index, 1);
                 return true;
             } else {
                 return false;
@@ -171,7 +162,9 @@ class PartyUp {
 
         //get the main platoon from people in channel and sort by prio
         let preMain:any[] = currentRows.filter((row:any) => {
-            if((row['platoon'] === "Main" || row['platoon'] === "DP") && connectedMembers.indexOf(row['Discord Tag']) !== -1){
+            let index:number = connectedMembers.indexOf(row['Discord Tag']);
+            if((row['platoon'] === "Main" || row['platoon'] === "DP") && index !== -1){
+                connectedMembers.splice(index, 1);
                 return true;
             } else {
                 return false;
@@ -180,7 +173,9 @@ class PartyUp {
 
         //get the flex shotcallers from people in channel and sort by prio
         let preFlexShotcaller:any[] = currentRows.filter((row:any) => {
-            if((row['platoon'] === "Flex Shotcaller") && connectedMembers.indexOf(row['Discord Tag']) !== -1){
+            let index:number = connectedMembers.indexOf(row['Discord Tag']);
+            if((row['platoon'] === "Flex Shotcaller") && index !== -1){
+                connectedMembers.splice(index,1);
                 return true;
             } else {
                 return false;
@@ -189,7 +184,9 @@ class PartyUp {
 
         //get the flex platoon from people in channel and sort by prio
         let preflex:any[] = currentRows.filter((row:any) => {
-            if((row['platoon'] === "Flex" || row['platoon'] === "Anti-Cannon") && connectedMembers.indexOf(row['Discord Tag']) !== -1){
+            let index:number = connectedMembers.indexOf(row['Discord Tag']);
+            if((row['platoon'] === "Flex" || row['platoon'] === "Anti-Cannon") && index !== -1){
+                connectedMembers.splice(index, 1);
                 return true;
             } else {
                 return false;
@@ -198,7 +195,9 @@ class PartyUp {
 
         //get the flex shotcallers from people in channel and sort by prio
         let preDefenseShotcaller:any[] = currentRows.filter((row:any) => {
-            if((row['platoon'] === "Defense Shotcaller") && connectedMembers.indexOf(row['Discord Tag']) !== -1){
+            let index:number = connectedMembers.indexOf(row['Discord Tag']);
+            if((row['platoon'] === "Defense Shotcaller") && index !== -1){
+                connectedMembers.splice(index, 1);
                 return true;
             } else {
                 return false;
@@ -208,7 +207,9 @@ class PartyUp {
 
         //get the defense platoon from people in channel
         let preDefense:any[] = currentRows.filter((row:any) => {
-            if(row['platoon'] === "Defense" && connectedMembers.indexOf(row['Discord Tag']) !== -1){
+            let index:number = connectedMembers.indexOf(row['Discord Tag']);
+            if(row['platoon'] === "Defense" && index !== -1){
+                connectedMembers.splice(index, 1);
                 return true;
             } else {
                 return false;
@@ -217,7 +218,9 @@ class PartyUp {
 
         //get the defense platoon from people in channel
         let preCannon:any[] = currentRows.filter((row:any) => {
-            if(row['platoon'] === "Cannon" && connectedMembers.indexOf(row['Discord Tag']) !== -1){
+            let index:number = connectedMembers.indexOf(row['Discord Tag']);
+            if(row['platoon'] === "Cannon" && index !== -1){
+                connectedMembers.splice(index, 1);
                 return true;
             } else {
                 return false;
@@ -226,13 +229,15 @@ class PartyUp {
 
         //get the anticannon platoon from people in channel
         let preAnticannon:any[] = currentRows.filter((row:any) => {
-            if(row['platoon'] === "Anti-Cannon" && connectedMembers.indexOf(row['Discord Tag']) !== -1){
+            let index:number = connectedMembers.indexOf(row['Discord Tag']);
+            if(row['platoon'] === "Anti-Cannon" && index !== -1){
+                connectedMembers.splice(index, 1);
                 return true;
             } else {
                 return false;
             }
         }).sort(this.sortGroupPriority);
-
+        
         /*
         *  Platoon generation
         */
@@ -291,7 +296,6 @@ class PartyUp {
             preDefenseShotcaller.forEach((row: any) => {
                 that.defenseShotCallers.push(row['Family Name']);
                 that.addToPlatoon(row['Family Name'], "Defense");
-                preMain.splice(preMain.indexOf(row), 1);
             });
         }
 
@@ -368,11 +372,7 @@ class PartyUp {
 
         //setup PA groups
         let prePA = currentRows.filter((row:any) => {
-            if((row['Class'] === "Wizard" || row['Class'] === "Witch") 
-                    && (that.mainPlat.indexOf(row['Family Name']) || 
-                    that.mainPlat2.indexOf(row['Family Name']) || 
-                    that.mainPlat3.indexOf(row['Family Name']) || 
-                    that.mainPlat4.indexOf(row['Family Name']))) {
+            if((row['Class'] === "Wizard" || row['Class'] === "Witch") && (that.mainPlat.indexOf(row['Family Name']) >= 0 || that.mainPlat2.indexOf(row['Family Name']) >= 0 || that.mainPlat3.indexOf(row['Family Name']) >= 0 || that.mainPlat4.indexOf(row['Family Name']) >= 0 )) {
                 return true;
             } else {
                 return false;
@@ -380,7 +380,6 @@ class PartyUp {
         });
 
         let maxPAGroupSize:number = Math.round(prePA.length / this.paGroups);
-        let PAGroups = [];
         prePA.sort(this.sortPAPriority).forEach((pa:any) => {
             if(that.paGroup1.length < maxPAGroupSize){
                 this.paGroup1.push(pa['Family Name']);
@@ -428,7 +427,11 @@ class PartyUp {
         if(this.paGroup3.length) {
             fields.push({name: "PA Group 3", value: this.paGroup3.sort().join("\n"),inline:true});
         }
+        if(connectedMembers.length) {
+            fields.push({name: "Merc or unknown name", value: connectedMembers.sort().join("\n"), inline:true});
+        }
 
+        console.log("partyUp call by: " + this.message.author.tag);
         this.message.channel.send({embed: {
             color: 0x00FF00,
             thumbnail: {
@@ -441,7 +444,6 @@ class PartyUp {
 
     }
 
-    //javascript sort operator for DP
     sortGroupPriority(a:any, b:any) {
         if(a['Group Priority'] === b['Group Priority']){ return 0}
         else {

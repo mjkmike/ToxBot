@@ -54,7 +54,6 @@ class GearRank {
         let gsDifference:number = 0;
 
         //current gear & first gear
-        var test = this.removeDupe(rows, 'AP (if you have multiple builds, choose your primary war set) Numbers Only').sort(this.sortAP);
         rows.forEach((row:any) => {
             if(currentMembersList.indexOf(row['Discord Tag']) === -1){
                 return;
@@ -108,32 +107,56 @@ class GearRank {
             //guildGS.push(gs);
         });
 
+        let recentRows:any[] = [];
+        let mostRecentNames:any[] = [];
+        rows.forEach((row:any) => {
+            //not in current members
+            if(currentMembersList.indexOf(row['Discord Tag']) === -1){
+                return;
+            }
+
+            if(mostRecentNames.indexOf(row['Discord Tag']) === -1) {
+                recentRows.push(row);
+                mostRecentNames.push(row['Discord Tag']);
+            } else if(mostRecentNames.indexOf(row['Discord Tag']) >= 0){
+                if(Date.parse(row['Timestamp']) > Date.parse(recentRows[mostRecentNames.indexOf(row['Discord Tag'])]['Timestamp'])) {
+                    recentRows[mostRecentNames.indexOf(row['Discord Tag'])] = row;
+                } else {
+                    //console.log('times did weirdness');
+                }    
+            } else {
+                //console.log("something went wrong in recent rows");
+            }
+        });
+
         //ap rank
-        let apSorted = rows.sort(this.sortAP);
-        let apTrimmed = this.removeDupe(apSorted, 'AP (if you have multiple builds, choose your primary war set) Numbers Only');
+        let apSorted = recentRows.sort(this.sortAP);
+        let apTrimmed = this.removeSingleDupe(apSorted, 'AP (if you have multiple builds, choose your primary war set) Numbers Only', userAP.toString());
         let apRank = apTrimmed.indexOf(userAP.toString()) + 1;
         
         //aap rank
-        let aapSorted = rows.sort(this.sortAAP);
-        let aapTrimmed = this.removeDupe(aapSorted, 'Awakened AP (if you have multiple builds, choose your primary war set) Numbers Only');
+        let aapSorted = recentRows.sort(this.sortAAP);
+        let aapTrimmed = this.removeSingleDupe(aapSorted, 'Awakened AP (if you have multiple builds, choose your primary war set) Numbers Only', userAAP.toString());
         let aapRank = aapTrimmed.indexOf(userAAP.toString()) + 1;
 
         //dp rank
-        let dpSorted = rows.sort(this.sortDP);
-        let dpTrimmed = this.removeDupe(dpSorted, 'DP (if you have multiple builds, choose your primary war set) Numbers Only');
+        let dpSorted = recentRows.sort(this.sortDP);
+        let dpTrimmed = this.removeSingleDupe(dpSorted, 'DP (if you have multiple builds, choose your primary war set) Numbers Only', userDP.toString());
         let dpRank = dpTrimmed.indexOf(userDP.toString()) + 1;
 
         //gs rank
         let gsTrimmed:number[] = [];
-        let currentSubmissionCount:number = 0;
         for (const username in guildGS){
-            if(!gsTrimmed.includes(guildGS[username])) {
+            if(username === user) {
                 gsTrimmed.push(guildGS[username]);
-                currentSubmissionCount++;
+            } else if (guildGS[user] != guildGS[username]) {
+                gsTrimmed.push(guildGS[username]); 
+            } else {
+                //console.log('hmm');
             }
         }
-        gsTrimmed = gsTrimmed.sort();
-        let gsRank = gsTrimmed.length - gsTrimmed.indexOf(userGS);
+        gsTrimmed = gsTrimmed.sort().reverse();
+        let gsRank = gsTrimmed.indexOf(userGS) + 1;
 
         const gearEmbed = {
             color: 0x00FF00,
@@ -158,19 +181,19 @@ class GearRank {
                 },
                 {
                     name: 'AP Rank',
-                    value: apRank + "/" + currentSubmissionCount
+                    value: apRank + "/" + currentMembersList.length
                 },
                 {
                     name: 'AAP Rank',
-                    value: aapRank + "/" + currentSubmissionCount
+                    value: aapRank + "/" + currentMembersList.length
                 },
                 {
                     name: 'DP Rank',
-                    value: dpRank + "/" + currentSubmissionCount
+                    value: dpRank + "/" + currentMembersList.length
                 },
                 {
                     name: 'GS Rank',
-                    value: gsRank + "/" + currentSubmissionCount
+                    value: gsRank + "/" + currentMembersList.length
                 }
             ],
             timestamp: new Date(),
@@ -181,17 +204,18 @@ class GearRank {
 
         //this.message.channel.send({embed: gearEmbed});
         console.log("gearRank call by: " + this.message.author.tag);
+        console.log("GS Rank-" + gsRank + " AP Rank-" + apRank + " AAP Rank-" + aapRank + " DP Rank-" + dpRank + " progress-" + gsDifference)
         this.message.author.send({embed: gearEmbed});
         
         let message = this.message;
         let messageContent:string = "It may be time to find an exploit. <a:weirdWalkAway:817066234344505354>";
-        if((gsRank / currentSubmissionCount) <= .1){
+        if((gsRank / currentMembersList.length) <= .1){
             messageContent = "WOW~ Thats a lot of damage.  You deserve a break why don't you maybe take a walk outside. <:pepeFeelsGamer:817066986285563995>";
-        } else if((gsRank / currentSubmissionCount) <= .2) {
+        } else if((gsRank / currentMembersList.length) <= .2) {
             messageContent = "Those shoulders of yours sure do look tired.<a:salute:817065842227150858>";
-        } else if((gsRank / currentSubmissionCount) <= .5) {
+        } else if((gsRank / currentMembersList.length) <= .5) {
             messageContent = "Yup thats gear.<:toxLove:814517421388857354>";
-        } else if((gsRank / currentSubmissionCount) <= .75) {
+        } else if((gsRank / currentMembersList.length) <= .75) {
             messageContent = "Hmm we should keep at it.  Maybe even a little harder. <:toxHype:814517420848971787>";
         }
 
@@ -225,6 +249,19 @@ class GearRank {
         }
     }
 
+    //javascript sort operator for DP
+    sortSubmission(a:any, b:any) {
+        if(a['DP (if you have multiple builds, choose your primary war set) Numbers Only'] === b['DP (if you have multiple builds, choose your primary war set) Numbers Only']){ return 0}
+        else {
+            return (a['DP (if you have multiple builds, choose your primary war set) Numbers Only'] > b['DP (if you have multiple builds, choose your primary war set) Numbers Only']) ? -1 : 1;
+        }
+    }
+
+    keepMostRecent(data:any[]): any {
+        let returnData:any[] = [];
+
+    }
+
     //removes duplicate values in an array
     removeDupe(data:any[], arrayIndex:string):any {
         let currentValue:any;
@@ -236,7 +273,23 @@ class GearRank {
             currentValue = row[arrayIndex];
         })
         return returnData;
+    }
 
+    //removes duplicate value in an array
+    removeSingleDupe(data:any[], arrayIndex:string, valueToRemove:string):any {
+        let returnData:any[] = [];
+        let usedOnce:boolean = false;
+        data.forEach((row:any) => {
+            if(valueToRemove == row[arrayIndex] && usedOnce == false){
+                returnData.push(row[arrayIndex]);
+                usedOnce = true;
+            } else if(valueToRemove != row[arrayIndex]) {
+                returnData.push(row[arrayIndex]);
+            } else {
+                //console.log("something happened");
+            }
+        })
+        return returnData;
     }
 }
 
