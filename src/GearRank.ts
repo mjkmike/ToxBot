@@ -11,9 +11,16 @@ class GearRank {
     async getValue():Promise<any> {
         //some basic weirdness checks
         if(!this.message && !this.message.author && !this.message.author.tag) {
+            console.log("something went wrong with the command message: ", this.message);
             return null;
         }
         let user:string = "@" + this.message.author.tag;
+        console.log("gearRank call by: " + this.message.author.tag);
+
+        if(this.message.member.roles.get("802258605034176562")) {
+            this.message.reply("This is a guild only feature, for guild members. <:spicy:824432764744761364>");
+            return null;
+        }
 
         //Access Detox Member Statistics
         const doc = new GoogleSpreadsheet('1Cr-GiObaSizG8jYvD5XBz9VEXdXK1o_f7kby9MI8xEI');
@@ -203,7 +210,6 @@ class GearRank {
         };
 
         //this.message.channel.send({embed: gearEmbed});
-        console.log("gearRank call by: " + this.message.author.tag);
         console.log("GS Rank-" + gsRank + " AP Rank-" + apRank + " AAP Rank-" + aapRank + " DP Rank-" + dpRank + " progress-" + gsDifference)
         this.message.author.send({embed: gearEmbed});
         
@@ -219,7 +225,7 @@ class GearRank {
             messageContent = "Hmm we should keep at it.  Maybe even a little harder. <:toxHype:814517420848971787>";
         }
 
-        this.message.channel.send(messageContent).then((msg:any) => {
+        this.message.reply(messageContent).then((msg:any) => {
             msg.delete(60000)
             message.delete(60000);
         });

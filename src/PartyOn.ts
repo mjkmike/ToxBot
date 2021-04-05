@@ -31,10 +31,12 @@ const WarStructure: warStuctureType = {
 
 class PartyOn {
     message: any;
+    client: any;
     args: string[];
 
-    constructor(message: any) {
+    constructor(message: any, client:any) {
         this.message = message;
+        this.client = client;
         this.args = this.message.content.split(' ');
     }
 
@@ -85,7 +87,7 @@ class PartyOn {
         }
 
         //get members in the offense channel(will contain mercs)
-        const warChannel = this.message.guild.channels.get('813570592237813798');
+        const warChannel = this.client.channels.get('813570592237813798')
         let connectedMembers: any[] = [];
         warChannel.members.forEach((member:any) => {
              connectedMembers.push("@" + member.user.tag);
@@ -587,6 +589,7 @@ class PartyOn {
                 url: 'https://i.imgur.com/XRIN9jb.png',
             },    
             title: "Party On Dudes",
+            description: "Thank you all for getting in discord on time.  If your name isn't in a platoon, hop into your normal platoon or let leadership know.",
             "fields": fields,
             timestamp: new Date()
         }});
