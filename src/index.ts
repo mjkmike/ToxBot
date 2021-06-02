@@ -28,33 +28,29 @@ client.on('ready', () => {
 client.on('message', (msg:any) => {
   if (msg.content === '.caphras') {
     msg.reply("https://docs.google.com/spreadsheets/d/1RhbTRme2VHseer7ae-oUTpk1Zc5gE4mhvfxyFCvhLns/edit?usp=sharing");
-  } else if(msg.content === '.warLifeskill') {
-    msg.reply("To get 20 second repair time on a base.\n" + 
-              "Level these skills, defense team will thank you:\n" +
-              "Arti 1 Gather or Fishing Prof or Arti 1 in the other\n" + 
-              "Arti 1 Hunting (takes 1 hour 300 energy w/exp buffs)\n" +
-              "Master 1 Cooking (afk cook for 1 day)\n" + 
-              "Master 1 Alchemy (afk alch for 1 day)\n" +
-              "Procesing Arti 1 (just make flax cost like 100mil)");
-    
-    
-  /*.partyOn <nodeSize> <PAGroups> <Cannons>
-    nodeSize i.e 30 
-    PA groups i.e. 2
-  */
-  } else if(msg.content.startsWith('.partyOn')) {
-    //list of allowed channels for this command
-    let channelOkayList = ["bot-spam", "nodewar"];
-    if(channelOkayList.indexOf(msg.channel.name) === -1) {
-      return;
-    }
-    //add additional roles to this if needed.  Only Detox for now
-    if(msg.member.roles.cache.find((role:any) => role.name === "Lieutenant")){
+  } else if(msg.content === '.warLifeskill' || msg.content === '.repair' || msg.content === '.repairTime') {
+    msg.reply("https://imgur.com/90ziViS.png");
+  } else if(msg.content === '.helpDesk') {
+    msg.reply("https://docs.google.com/spreadsheets/d/18T-U3LWjRJnJ6ictC9FFsRNuImrf1MwBoGnRDpkntCM/edit#gid=588360962");
+  } else if(msg.content === '.brackets') {
+    msg.reply('https://i.imgur.com/oVJmdny.png');
+  } else if (msg.content === '.attendancesheet') {
+    msg.reply("https://docs.google.com/spreadsheets/d/119Kj0SsjZ3jz7VgcHODCOvGxIRDgIfFkTqvWqXXoFe8/edit?usp=sharing");
+  } else if(msg.content === ".cron") {
+    msg.reply("https://i.imgur.com/jFQOk3h.png");
+  // }else if(msg.content.startsWith('.partyOn')) {
+  //   //list of allowed channels for this command
+  //   let channelOkayList = ["bot-spam", "nodewar"];
+  //   if(channelOkayList.indexOf(msg.channel.name) === -1) {
+  //     return;
+  //   }
+  //   //add additional roles to this if needed.  Only Detox for now
+  //   if(msg.member.roles.cache.find((role:any) => role.name === "Lieutenant")){
 
-      //Gear Rank google-spreadsheets
-      let pu = new PartyOn(msg, client);
-      pu.getValue();
-    }
+  //     //Gear Rank google-spreadsheets
+  //     let pu = new PartyOn(msg, client);
+  //     pu.getValue();
+  //   }
   } else  if (msg.content === '.attendance') {
     let channelOkayList = ["bot-spam", "nodewar"];
     if(channelOkayList.indexOf(msg.channel.name) === -1) {

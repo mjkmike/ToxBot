@@ -48,12 +48,10 @@ class SignUp {
 
         let nwChannel = this.client.channels.resolve(nwChannelID);
 
-        nwChannel.send(msg.guild.roles.resolve(detoxRoleID).toString()).then((mentionMessage:any) => {
-            nwChannel.send({'embed': embed}).then((signUpMsg:any) => {
-                signUpMsg.react('👍');
-                signUpMsg.react('👎');
-                msg.delete();
-            });
+        nwChannel.send({'embed': embed}).then((signUpMsg:any) => {
+            signUpMsg.react('👍');
+            signUpMsg.react('👎');
+            msg.delete();
         });
     }
 }

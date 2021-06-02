@@ -51,6 +51,42 @@ class GearRank2 {
 
         if(userRow.length !== 1) {
             message.reply("Something went wrong while looking up your name in the guild sheet.  Please let Leadership know.");
+            const errorEmbed = {
+                color: 0x00FF00,
+                title: user + '\'s ranking',
+                author: {
+                    name: 'Detox Gear Rankings',
+                    icon_url: 'https://i.imgur.com/XRIN9jb.png',
+                    url: 'https://discord.gg/ZSwazAkQYq',
+                },
+                description: 'Use the URL below to update sheet: ' + "https://forms.gle/xsQHqkjjQEnbzXmHA",
+                thumbnail: {
+                    url: 'https://i.imgur.com/XRIN9jb.png',
+                },
+                timestamp: new Date(),
+            };
+            message.author.send({embed: errorEmbed});
+            return;
+        }
+
+        if(userRow[0]['AP'] == null) {
+            message.reply("Something went wrong while looking up your name in the guild sheet.  Please let leadership know.");
+            const errorEmbed = {
+                color: 0x00FF00,
+                title: user + '\'s ranking',
+                author: {
+                    name: 'Detox Gear Rankings',
+                    icon_url: 'https://i.imgur.com/XRIN9jb.png',
+                    url: 'https://discord.gg/ZSwazAkQYq',
+                },
+                description: 'Use the URL below to update sheet: ' + "https://forms.gle/xsQHqkjjQEnbzXmHA",
+                thumbnail: {
+                    url: 'https://i.imgur.com/XRIN9jb.png',
+                },
+                timestamp: new Date(),
+            };
+            message.author.send({embed: errorEmbed});
+            return;
         }
 
         let userAP:number = Number(userRow[0]['AP']);
@@ -118,15 +154,17 @@ class GearRank2 {
 
         message.author.send({embed: gearEmbed});
         
-        let messageContent:string = "It may be time to find an exploit. <a:weirdWalkAway:817066234344505354>";
-        if((userGSRank / memberCount) <= .1){
-            messageContent = "WOW~ Thats a lot of damage.  You deserve a break why don't you maybe take a walk outside. <:pepeFeelsGamer:817066986285563995>";
+        let messageContent:string = "It may be time to find an exploit. <:toxDeadInside:832358366021943306>";
+        if(userGSRank === 1 ){
+            messageContent = "May your enemies bow before you and the destructive power of your credit card.  <:toxEvil:832358365912629299>";
+        } else if((userGSRank / memberCount) <= .1){
+            messageContent = "This... This is what peak performance looks like. <:toxChad:832358365837525083>";
         } else if((userGSRank / memberCount) <= .2) {
-            messageContent = "Those shoulders of yours sure do look tired.<a:salute:817065842227150858>";
+            messageContent = "Those shoulders of yours sure do look tired. <:toxEZ:832358365937270784>";
         } else if((userGSRank / memberCount) <= .5) {
-            messageContent = "Yup thats gear.<:toxLove:814517421388857354>";
+            messageContent = "Yup thats gear. <:toxLove:814517421388857354>";
         } else if((userGSRank / memberCount) <= .75) {
-            messageContent = "Hmm we should keep at it.  Maybe even a little harder. <:toxHype:814517420848971787>";
+            messageContent = "Hmm we should keep at it.  Maybe even a little harder. <:toxSmart:832358365786800169>";
         }
 
         message.reply(messageContent).then((msg:any) => {
