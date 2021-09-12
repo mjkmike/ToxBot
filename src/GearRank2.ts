@@ -17,6 +17,11 @@ class GearRank2 {
         let user:string = "@" + message.author.tag;
         console.log("gearRank2 call by: " + message.author.tag);
 
+        if(message.member.id === "85614143951892480"){
+            message.delete();
+            return null;
+        }
+
         if(message.member.roles.cache.get("802258605034176562")) {
             message.reply("This is a guild only feature, for guild members. <:spicy:824432764744761364>");
             return null;

@@ -87,8 +87,8 @@ client.on('message', (msg:any) => {
     }
   } else if (msg.content === '.gear'){
     //list of allowed channels for this command
-    let channelOkayList = ["detox-and-friends", "special-teams", "gear-share", "guild-clips", "leadership", "officer-chat", "lieutenant-chat", "bot-spam"];
-    if(channelOkayList.indexOf(msg.channel.name) === -1) {
+    let channelOkayList = ["802260548652761138", "802431784401764372", "802259891191414814", "802267304901083136", "808875967971459152", "802270257346510908"];
+    if(channelOkayList.indexOf(msg.channel.id) === -1) {
       return;
     }
 
